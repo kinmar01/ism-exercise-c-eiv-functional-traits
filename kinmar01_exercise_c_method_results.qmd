@@ -1,0 +1,34 @@
+---
+title: "MSc ENR ISM: Exercise C"
+Subtitle: "Ecological Indicator Values and Functional Traits"
+author: "Marius King"
+date: today
+date-format: long
+format: 
+  pdf:
+    geometry:
+      - top=25mm
+      - left=25mm
+      - right=30mm
+      - bottom=30mm
+editor: visual
+bibliography: bibliography.bib
+---
+
+## Methods
+
+Analysis of ecological indicator values [@dengler2023] and functional traits [@KleyerEtAl2008] from vegetation data of swiss grassland using R v4.5.0 [@RCoreTeam2025].
+
+All analyses were conducted using R version 4.5.0 [@RCoreTeam2025].
+
+## Results
+
+![Boxplots: Community means of Ecological Indicator Values](plot_eiv_unweighted.jpg){#fig-eiv_unweighted}
+
+
+![Boxplots: Community-weighted means of functional traits](plot_traits_cwm.jpg){#fig-traits_cwm}
+
+## References
+
+::: {#refs}
+:::

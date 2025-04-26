@@ -1,0 +1,526 @@
+---
+title: "MSc ENR ISM: Exercise C"
+Subtitle: "Ecological Indicator Values and Functional Traits"
+author: "Marius King"
+date: today
+date-format: long
+abstract: > 
+  Analysis of ecological indicator values [@dengler2023] and functional traits [@KleyerEtAl2008] from vegetation data of swiss grassland using R v4.5.0 [@RCoreTeam2025].
+editor: source
+title-block-banner: true
+format: 
+  html:           
+    toc: true 
+    toc-depth: 2
+    embed-resources: true
+    theme: journal
+execute:
+  warning: false
+  message: false
+format-links: false
+number-sections: true
+shift-heading-level-by: 1
+bibliography: bibliography.bib
+output-file: index
+---
+
+## *setup* {.unnumbered}
+
+```{r}
+pacman::p_load("tidyverse", "patchwork", "FD", "ggpubr", "patchwork", "knitr")
+
+set.seed(123)
+
+theme_set(
+  theme_minimal()+
+  theme(
+    strip.background = element_rect(fill = "black"),   
+    strip.text = element_text(color = "white"),
+    panel.spacing = unit(0.5, "lines"),
+    axis.text = element_text(color = gray(0.3)),
+    panel.border = element_rect(color = "black",fill=NA)
+  )
+)
+
+niche_colormap <- c(
+  moisture = "#e96e72",
+  nitrogen = "#b4b927",
+  reaction = "#43c2a9",
+  light = "#2ba8e1",
+  temperature = "#c17ab9"
+)
+
+landuse_colormap <- c(
+  "Meadow"="#6B8E23",
+  "Lawn"="#A8D08D"
+)
+```
+
+# Community means of Ecological Indicator Values
+
+**(a)** Download, import and check the ecological indicator values for Europe. The file “EIVE_Paper_1.0_SM_08.xlsx” can be found here https://zenodo.org/records/7534792 [@dengler2023].
+
+```{r}
+eiv <- read_delim("data/EIVE_Paper_1.0_SM_08.csv") |> 
+  mutate(
+    across(where(is.character), ~factor(.))
+  )
+
+eiv |> str()
+  
+```
+
+**(b)** Import the species list of the dataset “VegA_2019_species.csv” and join it with the Ecological Indicator Values (EIV) of Europe (a. Hint: use the base R function “merge” or a join function of the tidyverse.
+
+```{r}
+vegA_2019_species <- read_delim("data/VegA_2019_species.csv") |> 
+  mutate(
+    across(where(is.character), ~factor(.))
+  )
+
+vegA_2019_species |> str()
+
+```
+
+```{r}
+vegA_2019_species_eiv <- vegA_2019_species |> 
+  left_join(
+    eiv,
+    join_by(
+      ID==TaxonConcept
+    ),
+    keep=TRUE
+  )
+```
+
+**(c)** Some species did not match any EIV. Check all species that did not match- did the species did not match because there is no EIV available, or did the species did not match because of taxonomic differences between our species list and the species list of the EIV? Use https://europlusmed.org/ or the file EIVE_Paper_1.0_SM_03.xlsx from the webpage above to check for taxonomic discrepancies in the list. Find a way to match the species that have EIVs but listet with a different name. Hint: One way to do this is to copy the Colum with the species name and change the name to match the EIV list.
+
+```{r}
+vegA_2019_species_eiv |> 
+  filter(is.na(TaxonConcept)) |> 
+  select(ID,TaxonConcept) |> 
+  kable()
+```
+
+There are various reasons why the 14 species could not be classified as EIVs:
+
+1.  The taxon name or aggregate name does not match that in the EIV list. This can be remedied by creating a mapping between the taxon names used in the vegetation data and that in the EIV list.
+
+2.  Uncertain identification at species level. This data can either be assigned to the appropriate species or removed.
+
+3.  It was only determined at genus level (without species epithet). No EIVs can be read out for this and are not used any further.
+
+```{r}
+name_eiv_map <- c(
+  "Festuca arundinacea" = "Schedonorus arundinaceus", 
+  "Festuca pratensis" = "Schedonorus pratensis",    
+  "Ranunculus ficaria" = "Ficaria verna",       
+  "Taraxacum officinale aggr." = "Taraxacum sect. Taraxacum",
+  "Veronica cf. chamaedrys" = "Veronica chamaedrys"
+)
+
+vegA_2019_species_eiv_corrected <- vegA_2019_species |> 
+  mutate(
+    ID_orig = ID,
+    ID = recode(as.character(ID), !!!name_eiv_map),
+    ID = factor(ID)  # falls du ID wieder als Faktor brauchst
+  ) |> 
+  left_join(
+    eiv,
+    join_by(
+      ID==TaxonConcept
+    ),
+    keep=TRUE
+  ) |> 
+  filter(!is.na(TaxonConcept))
+```
+
+**(d)** Calculate the community means (without cover-weighting) of our species data. You can do this by hand or by using the function “functcomp” of the “FD” package.
+
+```{r}
+vegA_2019_species_eiv_corrected |> 
+  str()
+
+vegA_2019_community_means <- vegA_2019_species_eiv |> 
+  select(
+    ID, 
+    starts_with("CH"), 
+    `EIVEres-M`,
+    `EIVEres-M.nw3`,
+    `EIVEres-N`,
+    `EIVEres-N.nw3`,
+    `EIVEres-R`,
+    `EIVEres-R.nw3`,
+    `EIVEres-L`,
+    `EIVEres-L.nw3`,
+    `EIVEres-T`,
+    `EIVEres-T.nw3`,
+    ) |> 
+  pivot_longer(
+    cols = starts_with("CH"), 
+    names_to = "Plot", 
+    values_to = "Cover") |> 
+  filter(is.na(Cover)) |> 
+  group_by(Plot) |> 
+  summarise(
+    across(starts_with("EIVEres"), \(x) mean(x, na.rm = TRUE)))
+
+vegA_2019_community_means |> 
+  kable()
+```
+
+**(e)** Test if there is a difference between grassland and meadow plots, you can find the land use information in the file ‘VegA_2019_header.csv’. Visualise the results.
+
+```{r}
+vegA_2019_header <- read_delim("data/VegA_2019_header.csv")
+
+vegA_2019_header |> str()
+```
+
+```{r}
+vegA_2019_eiv_plotdata <- vegA_2019_community_means |> 
+  left_join(
+    vegA_2019_header |> 
+      select(Plot_2...1, Landuse),
+    join_by(Plot==Plot_2...1)
+  )
+
+vegA_2019_eiv_plotdata |> 
+  mutate(
+    moisture = `EIVEres-M`,
+    nitrogen = `EIVEres-N`,
+    reaction = `EIVEres-R`,
+    light = `EIVEres-L`,
+    temperature = `EIVEres-T`,
+  ) |> 
+  select(moisture,nitrogen,reaction,light,temperature, Landuse) |> 
+  summary()
+
+plot_moisture <- vegA_2019_eiv_plotdata |>  
+  ggplot(aes(Landuse, `EIVEres-M`, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)), 
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(4.3,4.6)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"moisture")+
+  theme(legend.position = "none")
+
+plot_nitrogen <- vegA_2019_eiv_plotdata |>  
+  ggplot(aes(Landuse, `EIVEres-N`, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)),
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(5.2,5.7)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"nitrogen")+
+  theme(legend.position = "none")
+
+plot_reaction <- vegA_2019_eiv_plotdata |>  
+  ggplot(aes(Landuse, `EIVEres-R`, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)),
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(5.8,6.1)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"reaction")+
+  theme(legend.position = "none")
+
+plot_light <- vegA_2019_eiv_plotdata |>  
+  ggplot(aes(Landuse, `EIVEres-L`, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)),
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(6.4,6.7)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"light")+
+  theme(legend.position = "none")
+
+plot_temperature <- vegA_2019_eiv_plotdata |>  
+  ggplot(aes(Landuse, `EIVEres-T`, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)),
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(4.1,4.3)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"temperature")+
+  theme(legend.position = "none")
+
+plot_eiv_unweighted <- plot_moisture +
+  plot_nitrogen +
+  plot_reaction +
+  plot_light +
+  plot_temperature +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(ncol = 5)
+
+plot_eiv_unweighted
+```
+
+```{r}
+ggsave(
+  "plot_eiv_unweighted.jpg",
+  plot=plot_eiv_unweighted,
+  width=24,
+  height=12,
+  units = "cm"
+)
+```
+
+
+# Community-weighted means of functional traits
+
+We can use the same approach to calculate the Community-weighted means (CWM) for functional traits. Calculate the CWM of the functional traits plant height (“canopy height”), seed mass and SLA. The trait data can be downloaded from: https://www.uni-oldenburg.de/en/landeco/research/leda/ [@KleyerEtAl2008]
+
+::: {.callout-tip}
+Tip: There is a separate file for each trait, combine them first. 
+:::
+
+::: {.callout-tip}
+Tip 2: Check if the data of the traits are skewed and use a log10 transformation if necessary.
+:::
+
+```{r}
+canopy_height <- read_delim("data/canopy_height.txt") |> 
+  filter(valid==1)
+seed_mass <- read_delim("data/seed_mass.txt") |> 
+  filter(valid==1)
+sla <- read_delim("data/SLA.txt") |> 
+  filter(valid==1)
+
+canopy_height |> str()
+seed_mass |> str()
+sla |> str()
+
+canopy_height <- canopy_height |> 
+    select(
+      ID=`SBS name`,
+      canopy_height=`single value [m]`
+    ) |> 
+  group_by(ID) |> 
+  summarise(canopy_height=canopy_height |> mean())
+  
+
+seed_mass <- seed_mass |> 
+    select(
+      ID=`SBS name`,
+      seed_mass=`single value [mg]`
+    ) |> 
+  group_by(ID) |> 
+  summarise(seed_mass=seed_mass |> mean())
+
+sla <- sla |> 
+    select(
+      ID=`SBS name`,
+      specific_leaf_area=`single value [mm^2/mg]`
+    ) |> 
+  group_by(ID) |> 
+  summarise(specific_leaf_area=specific_leaf_area |> mean())
+
+functional_traits <- full_join(
+    canopy_height,
+    seed_mass,
+    join_by(
+      ID
+    )
+  ) |> 
+  full_join(
+    sla,
+    join_by(
+      ID
+    )
+  )
+```
+
+```{r}
+
+vegA_2019_traits <- vegA_2019_species |> 
+  left_join(
+    functional_traits,
+    join_by(ID)
+  )  
+
+vegA_2019_traits |> 
+  filter(
+    is.na(canopy_height),
+    is.na(seed_mass),
+    is.na(specific_leaf_area)
+  ) |> 
+  select(ID,canopy_height,seed_mass,specific_leaf_area)
+```
+
+```{r}
+name_traits_map <- c(
+  "Achillea millefolium aggr." = "Achillea millefolium", 
+  "Cerastium fontanum subsp. vulgare" = "Cerastium fontanum",    
+  "Galium mollugo aggr." = "Galium mollugo",       
+  "Taraxacum officinale aggr." = "Taraxacum officinale"
+)
+
+vegA_2019_traits_corrected <- vegA_2019_species |> 
+  mutate(
+    ID_orig = ID,
+    ID = recode(as.character(ID), !!!name_traits_map),
+    ID = factor(ID)  # falls du ID wieder als Faktor brauchst
+  ) |> 
+  left_join(
+    functional_traits,
+    join_by(
+      ID
+    )
+  )
+
+```
+
+```{r}
+traits <- vegA_2019_traits_corrected |> 
+  select(ID, canopy_height, seed_mass, specific_leaf_area) |> 
+  column_to_rownames("ID") 
+
+abundances <- vegA_2019_traits_corrected |> 
+  select(ID, starts_with("CH")) |> 
+  column_to_rownames("ID") |> 
+  as.matrix() |> 
+  t()
+
+vegA_2019_traits_cwm <- functcomp(traits, abundances) |> 
+  mutate(Plot = rownames(abundances))
+```
+
+```{r}
+vegA_2019_traits_cwm_plotdata <- vegA_2019_traits_cwm |> 
+  left_join(
+    vegA_2019_header |> 
+      select(Plot_2...1, Landuse),
+    join_by(Plot==Plot_2...1)
+  )
+
+vegA_2019_traits_cwm_plotdata |> 
+  select(Plot,canopy_height,seed_mass,specific_leaf_area, Landuse) |> 
+  summary()
+
+plot_canopy_height <- vegA_2019_traits_cwm_plotdata |>  
+  ggplot(aes(Landuse, canopy_height, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)), 
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(0.1,0.7)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"canopy height [m]")+
+  theme(legend.position = "none")
+
+plot_seed_mass <- vegA_2019_traits_cwm_plotdata |>  
+  ggplot(aes(Landuse, seed_mass, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)), 
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(0.5,3)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"seed mass [mg]")+
+  theme(legend.position = "none")
+
+plot_specifig_leaf_area <- vegA_2019_traits_cwm_plotdata |>  
+  ggplot(aes(Landuse, specific_leaf_area, fill=Landuse)) +
+  geom_boxplot()+
+  geom_jitter(width=0.2)+
+  stat_compare_means(
+    method = "anova", 
+    aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)), 
+    label.x = 1.25
+  )+
+  scale_y_continuous(
+    limits=c(22,33)
+  )+
+  scale_fill_manual(
+    values=landuse_colormap
+  )+
+  labs(x = NULL, y = NULL)+
+  facet_wrap(.~"SLA [mm^2/mg]")+
+  theme(legend.position = "none")
+
+plot_traits_cwm <- plot_canopy_height +
+  plot_seed_mass +
+  plot_specifig_leaf_area +
+  plot_annotation(tag_levels = "A")
+
+plot_traits_cwm
+```
+
+```{r}
+
+ggsave(
+  "plot_traits_cwm.jpg",
+  plot=plot_traits_cwm,
+  width=24,
+  height=12,
+  units = "cm"
+)
+```
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
