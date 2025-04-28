@@ -115,8 +115,7 @@ name_eiv_map <- c(
   "Festuca arundinacea" = "Schedonorus arundinaceus", 
   "Festuca pratensis" = "Schedonorus pratensis",    
   "Ranunculus ficaria" = "Ficaria verna",       
-  "Taraxacum officinale aggr." = "Taraxacum sect. Taraxacum",
-  "Veronica cf. chamaedrys" = "Veronica chamaedrys"
+  "Taraxacum officinale aggr." = "Taraxacum sect. Taraxacum"
 )
 
 vegA_2019_species_eiv_corrected <- vegA_2019_species |> 
@@ -184,7 +183,19 @@ vegA_2019_eiv_plotdata <- vegA_2019_community_means |>
       select(Plot_2...1, Landuse),
     join_by(Plot==Plot_2...1)
   )
+```
 
+```{r}
+
+aov(`EIVEres-M`~Landuse, data=vegA_2019_eiv_plotdata) |> summary()
+aov(`EIVEres-N`~Landuse, data=vegA_2019_eiv_plotdata) |> summary()
+aov(`EIVEres-R`~Landuse, data=vegA_2019_eiv_plotdata) |> summary()
+aov(`EIVEres-L`~Landuse, data=vegA_2019_eiv_plotdata) |> summary()
+aov(`EIVEres-T`~Landuse, data=vegA_2019_eiv_plotdata) |> summary()
+```
+
+
+```{r}
 vegA_2019_eiv_plotdata |> 
   mutate(
     moisture = `EIVEres-M`,
@@ -387,11 +398,12 @@ vegA_2019_traits <- vegA_2019_species |>
 
 vegA_2019_traits |> 
   filter(
-    is.na(canopy_height),
-    is.na(seed_mass),
+    is.na(canopy_height) |
+    is.na(seed_mass) |
     is.na(specific_leaf_area)
   ) |> 
-  select(ID,canopy_height,seed_mass,specific_leaf_area)
+  select(ID,canopy_height,seed_mass,specific_leaf_area) |> 
+  kable()
 ```
 
 ```{r}
@@ -406,7 +418,7 @@ vegA_2019_traits_corrected <- vegA_2019_species |>
   mutate(
     ID_orig = ID,
     ID = recode(as.character(ID), !!!name_traits_map),
-    ID = factor(ID)  # falls du ID wieder als Faktor brauchst
+    ID = factor(ID) 
   ) |> 
   left_join(
     functional_traits,
@@ -429,7 +441,11 @@ abundances <- vegA_2019_traits_corrected |>
   t()
 
 vegA_2019_traits_cwm <- functcomp(traits, abundances) |> 
-  mutate(Plot = rownames(abundances))
+  mutate(
+    Plot = rownames(abundances),
+    canopy_height = canopy_height |> log10(),
+    seed_mass = seed_mass |> log10()
+    )
 ```
 
 ```{r}
@@ -439,7 +455,15 @@ vegA_2019_traits_cwm_plotdata <- vegA_2019_traits_cwm |>
       select(Plot_2...1, Landuse),
     join_by(Plot==Plot_2...1)
   )
+```
 
+```{r}
+aov(canopy_height~Landuse, data=vegA_2019_traits_cwm_plotdata) |> summary()
+aov(seed_mass~Landuse, data=vegA_2019_traits_cwm_plotdata) |> summary()
+aov(specific_leaf_area~Landuse, data=vegA_2019_traits_cwm_plotdata) |> summary()
+```
+
+```{r}
 vegA_2019_traits_cwm_plotdata |> 
   select(Plot,canopy_height,seed_mass,specific_leaf_area, Landuse) |> 
   summary()
@@ -454,13 +478,13 @@ plot_canopy_height <- vegA_2019_traits_cwm_plotdata |>
     label.x = 1.25
   )+
   scale_y_continuous(
-    limits=c(0.1,0.7)
+    limits=c(-0.9,-0.2)
   )+
   scale_fill_manual(
     values=landuse_colormap
   )+
-  labs(x = NULL, y = NULL)+
-  facet_wrap(.~"canopy height [m]")+
+  labs(x = NULL, y = "log10(m)")+
+  facet_wrap(.~"canopy height")+
   theme(legend.position = "none")
 
 plot_seed_mass <- vegA_2019_traits_cwm_plotdata |>  
@@ -473,13 +497,13 @@ plot_seed_mass <- vegA_2019_traits_cwm_plotdata |>
     label.x = 1.25
   )+
   scale_y_continuous(
-    limits=c(0.5,3)
+    limits=c(-0.2006,0.5)
   )+
   scale_fill_manual(
     values=landuse_colormap
   )+
-  labs(x = NULL, y = NULL)+
-  facet_wrap(.~"seed mass [mg]")+
+  labs(x = NULL, y = "log10(mg)")+
+  facet_wrap(.~"seed mass")+
   theme(legend.position = "none")
 
 plot_specifig_leaf_area <- vegA_2019_traits_cwm_plotdata |>  
@@ -491,14 +515,11 @@ plot_specifig_leaf_area <- vegA_2019_traits_cwm_plotdata |>
     aes(label = paste0("p = ", ..p.format.., " ", ..p.signif..)), 
     label.x = 1.25
   )+
-  scale_y_continuous(
-    limits=c(22,33)
-  )+
   scale_fill_manual(
     values=landuse_colormap
   )+
-  labs(x = NULL, y = NULL)+
-  facet_wrap(.~"SLA [mm^2/mg]")+
+  labs(x = NULL, y = "mm^2/mg")+
+  facet_wrap(.~"SLA")+
   theme(legend.position = "none")
 
 plot_traits_cwm <- plot_canopy_height +

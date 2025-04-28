@@ -17,14 +17,25 @@ bibliography: bibliography.bib
 
 ## Methods
 
-Analysis of ecological indicator values [@dengler2023] and functional traits [@KleyerEtAl2008] from vegetation data of swiss grassland using R v4.5.0 [@RCoreTeam2025].
+The analysis is based on data from vegetation surveys of swiss grassland (meadow and pasture) consisting of plotwise abundance data and the corresponding header data, of which only the assignment to the respective landuse was used.
+
+### Community Means of Ecological Indicator Values
+
+Ecological indicator values (EIV) for Europe were obtained from @dengler2023 and joined to the vegetation species list. Species that could not be directly matched were cross-checked for taxonomic discrepancies and corrected when necessary to enable successful matching. Species lacking available EIV values, as well as those with uncertain determinations at the species or genus level, were excluded prior to the calculation of community means.
+
+Community means of EIV were calculated without abundance weighting. Mean values were aggregated at the plot level. Differences in community means between meadows and pastures were analyzed statistically and visualized graphically.
+
+### Community-Weighted Means of Functional Traits
+
+Functional trait data, specifically canopy height, seed mass, and specific leaf area (SLA), were sourced from the LEDA traitbase [@KleyerEtAl2008]. Individual trait datasets were merged and inspected for skewness. Where appropriate, traits were log10-transformed to approximate normal distributions. Analogous to the EIV procedure, the trait data were joined to the vegetation species list.
+
+Community-weighted means (CWM) of the functional traits were calculated using the `functcomp` function of the **FD** package [@Laliberte2010; @Laliberte2014]. As with the EIV analysis, differences between landuse types were statistically tested and visualized.
 
 All analyses were conducted using R version 4.5.0 [@RCoreTeam2025].
 
 ## Results
 
 ![Boxplots: Community means of Ecological Indicator Values](plot_eiv_unweighted.jpg){#fig-eiv_unweighted}
-
 
 ![Boxplots: Community-weighted means of functional traits](plot_traits_cwm.jpg){#fig-traits_cwm}
 

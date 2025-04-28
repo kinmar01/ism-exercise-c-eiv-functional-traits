@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Marius King">
-<meta name="dcterms.date" content="2025-04-26">
+<meta name="dcterms.date" content="2025-04-28">
 
 <title>MSc ENR ISM: Exercise C</title>
 <style>
@@ -3120,7 +3120,7 @@ vertical-align: -.125em;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 26, 2025</p>
+        <p class="date">April 28, 2025</p>
       </div>
     </div>
     
@@ -3155,7 +3155,7 @@ vertical-align: -.125em;
 <section id="setup" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="setup"><em>setup</em></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;knitr&quot;</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;FD&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;knitr&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -3362,88 +3362,87 @@ vertical-align: -.125em;
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Festuca arundinacea&quot;</span> <span class="ot">=</span> <span class="st">&quot;Schedonorus arundinaceus&quot;</span>, </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Festuca pratensis&quot;</span> <span class="ot">=</span> <span class="st">&quot;Schedonorus pratensis&quot;</span>,    </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Ranunculus ficaria&quot;</span> <span class="ot">=</span> <span class="st">&quot;Ficaria verna&quot;</span>,       </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Taraxacum officinale aggr.&quot;</span> <span class="ot">=</span> <span class="st">&quot;Taraxacum sect. Taraxacum&quot;</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Veronica cf. chamaedrys&quot;</span> <span class="ot">=</span> <span class="st">&quot;Veronica chamaedrys&quot;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>vegA_2019_species_eiv_corrected <span class="ot">&lt;-</span> vegA_2019_species <span class="sc">|&gt;</span> </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID_orig =</span> ID,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="fu">recode</span>(<span class="fu">as.character</span>(ID), <span class="sc">!!!</span>name_eiv_map),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="fu">factor</span>(ID)  <span class="co"># falls du ID wieder als Faktor brauchst</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    eiv,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      ID<span class="sc">==</span>TaxonConcept</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">keep=</span><span class="cn">TRUE</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(TaxonConcept))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Taraxacum officinale aggr.&quot;</span> <span class="ot">=</span> <span class="st">&quot;Taraxacum sect. Taraxacum&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>vegA_2019_species_eiv_corrected <span class="ot">&lt;-</span> vegA_2019_species <span class="sc">|&gt;</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID_orig =</span> ID,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="fu">recode</span>(<span class="fu">as.character</span>(ID), <span class="sc">!!!</span>name_eiv_map),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="fu">factor</span>(ID)  <span class="co"># falls du ID wieder als Faktor brauchst</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    eiv,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      ID<span class="sc">==</span>TaxonConcept</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">keep=</span><span class="cn">TRUE</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(TaxonConcept))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>(d)</strong> Calculate the community means (without cover-weighting) of our species data. You can do this by hand or by using the function “functcomp” of the “FD” package.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_species_eiv_corrected <span class="sc">|&gt;</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [71 × 57] (S3: tbl_df/tbl/data.frame)
- $ ID           : Factor w/ 79 levels &quot;Acer sp.&quot;,&quot;Achillea millefolium aggr.&quot;,..: 2 3 4 6 7 8 9 10 11 12 ...
- $ CH01A        : num [1:71] NA NA NA NA NA 0.2 NA NA 0.5 NA ...
- $ CH01B        : num [1:71] 2 NA NA NA NA 15 NA NA 0.01 NA ...
- $ CH02A        : num [1:71] 0.2 NA 0.05 NA 0.5 35 NA 0.2 NA NA ...
- $ CH02B        : num [1:71] NA NA 0.01 NA NA 1 NA NA NA NA ...
- $ CH03A        : num [1:71] NA NA NA NA NA NA NA NA 0.01 NA ...
- $ CH03B        : num [1:71] NA NA NA NA NA NA NA NA NA NA ...
- $ CH04A        : num [1:71] NA NA 1 NA NA 60 NA 4 NA NA ...
- $ CH04B        : num [1:71] NA NA NA NA NA 15 NA 20 NA 30 ...
- $ CH05A        : num [1:71] NA NA NA NA NA NA NA 0.5 0.05 NA ...
- $ CH05B        : num [1:71] 1 NA NA NA NA NA NA NA 1 NA ...
- $ CH06A        : num [1:71] NA 10 NA NA NA 20 NA NA NA NA ...
- $ CH06B        : num [1:71] NA NA 10 NA NA 40 1 NA 1 NA ...
- $ CH07A        : num [1:71] NA NA 0.2 NA NA 0.5 NA NA NA NA ...
- $ CH07B        : num [1:71] NA NA NA NA NA NA NA NA 4 NA ...
- $ CH08A        : num [1:71] NA NA 0.05 25 NA 45 NA NA NA NA ...
- $ CH08B        : num [1:71] NA 2 NA NA NA 50 NA 8 NA NA ...
- $ CH09A        : num [1:71] NA 4 NA NA NA 0.05 NA NA NA NA ...
- $ CH09B        : num [1:71] NA 2 NA NA NA NA NA NA NA NA ...
- $ CH10A        : num [1:71] NA NA 3 32 NA 2 NA 26 NA NA ...
- $ CH10B        : num [1:71] NA NA 0.1 1.5 NA 80 NA NA NA NA ...
- $ CH11A        : num [1:71] NA NA NA NA NA 25 NA 8 NA 15 ...
- $ CH11B        : num [1:71] NA 2 0.5 NA NA 70 NA NA NA NA ...
- $ CH12A        : num [1:71] NA 0.01 0.01 NA NA NA NA NA 2 NA ...
- $ CH12B        : num [1:71] 1.5 NA 0.2 NA NA NA NA NA 6 NA ...
- $ CH13A        : num [1:71] NA 3 0.1 NA NA 60 NA NA NA 27 ...
- $ CH13B        : num [1:71] NA NA NA 20 NA 30 NA NA NA 7 ...
- $ CH14A        : num [1:71] NA 1 NA NA NA NA NA NA 12.5 NA ...
- $ CH14B        : num [1:71] 2 5 NA NA NA NA NA NA 5 NA ...
- $ CH15A        : num [1:71] NA 0.2 NA NA NA 45 NA NA NA 5 ...
- $ CH15B        : num [1:71] NA NA NA NA NA 20 NA NA NA 25 ...
- $ CH16A        : num [1:71] NA 17 NA NA NA NA NA NA 0.1 NA ...
- $ CH16B        : num [1:71] NA 25 NA NA NA NA NA NA 0.7 NA ...
- $ CH17A        : num [1:71] NA NA NA NA NA 20 NA NA NA 70 ...
- $ CH17B        : num [1:71] NA NA NA NA NA 60 NA NA NA 2 ...
- $ CH18A        : num [1:71] 9 NA NA NA NA NA NA NA 4 NA ...
- $ CH18B        : num [1:71] 1.5 NA NA NA NA 8 NA NA 8 NA ...
+<pre><code>tibble [70 × 57] (S3: tbl_df/tbl/data.frame)
+ $ ID           : Factor w/ 80 levels &quot;Acer sp.&quot;,&quot;Achillea millefolium aggr.&quot;,..: 2 3 4 6 7 8 9 10 11 12 ...
+ $ CH01A        : num [1:70] NA NA NA NA NA 0.2 NA NA 0.5 NA ...
+ $ CH01B        : num [1:70] 2 NA NA NA NA 15 NA NA 0.01 NA ...
+ $ CH02A        : num [1:70] 0.2 NA 0.05 NA 0.5 35 NA 0.2 NA NA ...
+ $ CH02B        : num [1:70] NA NA 0.01 NA NA 1 NA NA NA NA ...
+ $ CH03A        : num [1:70] NA NA NA NA NA NA NA NA 0.01 NA ...
+ $ CH03B        : num [1:70] NA NA NA NA NA NA NA NA NA NA ...
+ $ CH04A        : num [1:70] NA NA 1 NA NA 60 NA 4 NA NA ...
+ $ CH04B        : num [1:70] NA NA NA NA NA 15 NA 20 NA 30 ...
+ $ CH05A        : num [1:70] NA NA NA NA NA NA NA 0.5 0.05 NA ...
+ $ CH05B        : num [1:70] 1 NA NA NA NA NA NA NA 1 NA ...
+ $ CH06A        : num [1:70] NA 10 NA NA NA 20 NA NA NA NA ...
+ $ CH06B        : num [1:70] NA NA 10 NA NA 40 1 NA 1 NA ...
+ $ CH07A        : num [1:70] NA NA 0.2 NA NA 0.5 NA NA NA NA ...
+ $ CH07B        : num [1:70] NA NA NA NA NA NA NA NA 4 NA ...
+ $ CH08A        : num [1:70] NA NA 0.05 25 NA 45 NA NA NA NA ...
+ $ CH08B        : num [1:70] NA 2 NA NA NA 50 NA 8 NA NA ...
+ $ CH09A        : num [1:70] NA 4 NA NA NA 0.05 NA NA NA NA ...
+ $ CH09B        : num [1:70] NA 2 NA NA NA NA NA NA NA NA ...
+ $ CH10A        : num [1:70] NA NA 3 32 NA 2 NA 26 NA NA ...
+ $ CH10B        : num [1:70] NA NA 0.1 1.5 NA 80 NA NA NA NA ...
+ $ CH11A        : num [1:70] NA NA NA NA NA 25 NA 8 NA 15 ...
+ $ CH11B        : num [1:70] NA 2 0.5 NA NA 70 NA NA NA NA ...
+ $ CH12A        : num [1:70] NA 0.01 0.01 NA NA NA NA NA 2 NA ...
+ $ CH12B        : num [1:70] 1.5 NA 0.2 NA NA NA NA NA 6 NA ...
+ $ CH13A        : num [1:70] NA 3 0.1 NA NA 60 NA NA NA 27 ...
+ $ CH13B        : num [1:70] NA NA NA 20 NA 30 NA NA NA 7 ...
+ $ CH14A        : num [1:70] NA 1 NA NA NA NA NA NA 12.5 NA ...
+ $ CH14B        : num [1:70] 2 5 NA NA NA NA NA NA 5 NA ...
+ $ CH15A        : num [1:70] NA 0.2 NA NA NA 45 NA NA NA 5 ...
+ $ CH15B        : num [1:70] NA NA NA NA NA 20 NA NA NA 25 ...
+ $ CH16A        : num [1:70] NA 17 NA NA NA NA NA NA 0.1 NA ...
+ $ CH16B        : num [1:70] NA 25 NA NA NA NA NA NA 0.7 NA ...
+ $ CH17A        : num [1:70] NA NA NA NA NA 20 NA NA NA 70 ...
+ $ CH17B        : num [1:70] NA NA NA NA NA 60 NA NA NA 2 ...
+ $ CH18A        : num [1:70] 9 NA NA NA NA NA NA NA 4 NA ...
+ $ CH18B        : num [1:70] 1.5 NA NA NA NA 8 NA NA 8 NA ...
  $ ID_orig      : Factor w/ 80 levels &quot;Acer sp.&quot;,&quot;Achillea millefolium aggr.&quot;,..: 2 3 4 6 7 8 9 10 11 12 ...
  $ TaxonConcept : Factor w/ 14835 levels &quot;Abies alba&quot;,&quot;Abies alba ? nordmanniana&quot;,..: 107 322 377 800 1057 1156 1164 1443 1980 2225 ...
  $ UUID         : Factor w/ 14387 levels &quot;0003d292-95e7-43c4-ae53-225a0ca80203&quot;,..: 8851 12748 3844 1444 5262 7823 12513 1723 5408 9973 ...
  $ TaxonRank    : Factor w/ 6 levels &quot;Section&quot;,&quot;Species&quot;,..: 3 2 2 2 2 2 2 2 2 2 ...
  $ AccordingTo  : Factor w/ 4 levels &quot;additionalAggregates&quot;,..: 1 4 4 4 4 4 4 4 4 3 ...
- $ EIVEres-M    : num [1:71] 3.6 4.2 5 5.3 4.8 4.6 4.6 4.3 4.6 4.1 ...
- $ EIVEres-M.nw3: num [1:71] 4.4 4.4 2.8 3.9 3.4 4.5 2.9 3.6 3.2 5.2 ...
- $ EIVEres-M.n  : num [1:71] 28 24 27 27 24 23 26 25 24 21 ...
- $ EIVEres-N    : num [1:71] 4.1 3.6 5.7 6.9 5 3.7 8.1 6.9 5.5 4.8 ...
- $ EIVEres-N.nw3: num [1:71] 6.6 4.7 4.6 5.3 7.1 6.7 4.7 5.4 5.3 6 ...
- $ EIVEres-N.n  : num [1:71] 21 22 20 21 16 21 19 20 21 19 ...
- $ EIVEres-R    : num [1:71] 6 3.6 5.6 5.9 5.5 4.3 6.4 6.7 5.8 5.9 ...
- $ EIVEres-R.nw3: num [1:71] 6.1 4.2 5.3 4 5.3 4.5 5.2 4 6.6 5.4 ...
- $ EIVEres-R.n  : num [1:71] 21 24 21 22 19 24 19 22 18 16 ...
- $ EIVEres-L    : num [1:71] 7.7 6.7 5.3 6.6 4.3 7 6.4 7.6 7.9 7.3 ...
- $ EIVEres-L.nw3: num [1:71] 4.2 4.4 4.8 4.2 6.2 4.5 6.1 3.8 3.8 4.4 ...
- $ EIVEres-L.n  : num [1:71] 20 20 18 20 14 17 19 19 20 18 ...
- $ EIVEres-T    : num [1:71] 4.1 3.8 4.1 4 4 4.1 3.8 4.3 4.2 4.6 ...
- $ EIVEres-T.nw3: num [1:71] 5 4.2 4.8 4.7 4.6 5.8 4.4 4.2 5.1 4.3 ...
- $ EIVEres-T.n  : num [1:71] 21 16 16 18 15 16 16 20 20 19 ...</code></pre>
+ $ EIVEres-M    : num [1:70] 3.6 4.2 5 5.3 4.8 4.6 4.6 4.3 4.6 4.1 ...
+ $ EIVEres-M.nw3: num [1:70] 4.4 4.4 2.8 3.9 3.4 4.5 2.9 3.6 3.2 5.2 ...
+ $ EIVEres-M.n  : num [1:70] 28 24 27 27 24 23 26 25 24 21 ...
+ $ EIVEres-N    : num [1:70] 4.1 3.6 5.7 6.9 5 3.7 8.1 6.9 5.5 4.8 ...
+ $ EIVEres-N.nw3: num [1:70] 6.6 4.7 4.6 5.3 7.1 6.7 4.7 5.4 5.3 6 ...
+ $ EIVEres-N.n  : num [1:70] 21 22 20 21 16 21 19 20 21 19 ...
+ $ EIVEres-R    : num [1:70] 6 3.6 5.6 5.9 5.5 4.3 6.4 6.7 5.8 5.9 ...
+ $ EIVEres-R.nw3: num [1:70] 6.1 4.2 5.3 4 5.3 4.5 5.2 4 6.6 5.4 ...
+ $ EIVEres-R.n  : num [1:70] 21 24 21 22 19 24 19 22 18 16 ...
+ $ EIVEres-L    : num [1:70] 7.7 6.7 5.3 6.6 4.3 7 6.4 7.6 7.9 7.3 ...
+ $ EIVEres-L.nw3: num [1:70] 4.2 4.4 4.8 4.2 6.2 4.5 6.1 3.8 3.8 4.4 ...
+ $ EIVEres-L.n  : num [1:70] 20 20 18 20 14 17 19 19 20 18 ...
+ $ EIVEres-T    : num [1:70] 4.1 3.8 4.1 4 4 4.1 3.8 4.3 4.2 4.6 ...
+ $ EIVEres-T.nw3: num [1:70] 5 4.2 4.8 4.7 4.6 5.8 4.4 4.2 5.1 4.3 ...
+ $ EIVEres-T.n  : num [1:70] 21 16 16 18 15 16 16 20 20 19 ...</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_community_means <span class="ot">&lt;-</span> vegA_2019_species_eiv <span class="sc">|&gt;</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
@@ -4043,18 +4042,55 @@ vertical-align: -.125em;
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    vegA_2019_header <span class="sc">|&gt;</span> </span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Plot_2...<span class="dv">1</span>, Landuse),</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(Plot<span class="sc">==</span>Plot_2...<span class="dv">1</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>vegA_2019_eiv_plotdata <span class="sc">|&gt;</span> </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">moisture =</span> <span class="st">`</span><span class="at">EIVEres-M</span><span class="st">`</span>,</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">nitrogen =</span> <span class="st">`</span><span class="at">EIVEres-N</span><span class="st">`</span>,</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">reaction =</span> <span class="st">`</span><span class="at">EIVEres-R</span><span class="st">`</span>,</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">light =</span> <span class="st">`</span><span class="at">EIVEres-L</span><span class="st">`</span>,</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">temperature =</span> <span class="st">`</span><span class="at">EIVEres-T</span><span class="st">`</span>,</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(moisture,nitrogen,reaction,light,temperature, Landuse) <span class="sc">|&gt;</span> </span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(<span class="st">`</span><span class="at">EIVEres-M</span><span class="st">`</span><span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_eiv_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df  Sum Sq   Mean Sq F value Pr(&gt;F)
+Landuse      1 0.00006 0.0000586   0.054  0.818
+Residuals   34 0.03696 0.0010871               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(<span class="st">`</span><span class="at">EIVEres-N</span><span class="st">`</span><span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_eiv_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df  Sum Sq Mean Sq F value Pr(&gt;F)  
+Landuse      1 0.03432 0.03432   5.876 0.0208 *
+Residuals   34 0.19862 0.00584                 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(<span class="st">`</span><span class="at">EIVEres-R</span><span class="st">`</span><span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_eiv_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq  Mean Sq F value Pr(&gt;F)
+Landuse      1 0.0000 0.000000       0  0.999
+Residuals   34 0.0508 0.001494               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(<span class="st">`</span><span class="at">EIVEres-L</span><span class="st">`</span><span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_eiv_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df  Sum Sq  Mean Sq F value Pr(&gt;F)
+Landuse      1 0.00356 0.003561   1.189  0.283
+Residuals   34 0.10181 0.002994               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(<span class="st">`</span><span class="at">EIVEres-T</span><span class="st">`</span><span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_eiv_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df   Sum Sq   Mean Sq F value Pr(&gt;F)  
+Landuse      1 0.001549 0.0015489   3.808 0.0593 .
+Residuals   34 0.013831 0.0004068                 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_eiv_plotdata <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">moisture =</span> <span class="st">`</span><span class="at">EIVEres-M</span><span class="st">`</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">nitrogen =</span> <span class="st">`</span><span class="at">EIVEres-N</span><span class="st">`</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">reaction =</span> <span class="st">`</span><span class="at">EIVEres-R</span><span class="st">`</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">light =</span> <span class="st">`</span><span class="at">EIVEres-L</span><span class="st">`</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">temperature =</span> <span class="st">`</span><span class="at">EIVEres-T</span><span class="st">`</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(moisture,nitrogen,reaction,light,temperature, Landuse) <span class="sc">|&gt;</span> </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    moisture        nitrogen        reaction         light      
  Min.   :4.352   Min.   :5.276   Min.   :5.885   Min.   :6.409  
@@ -4071,110 +4107,110 @@ vertical-align: -.125em;
  3rd Qu.:4.210                     
  Max.   :4.249                     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plot_moisture <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-M</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)), </span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">4.3</span>,<span class="fl">4.6</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;moisture&quot;</span>)<span class="sc">+</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>plot_nitrogen <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-N</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">5.2</span>,<span class="fl">5.7</span>)</span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;nitrogen&quot;</span>)<span class="sc">+</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>plot_reaction <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-R</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">5.8</span>,<span class="fl">6.1</span>)</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;reaction&quot;</span>)<span class="sc">+</span></span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>plot_light <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-L</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">6.4</span>,<span class="fl">6.7</span>)</span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
-<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;light&quot;</span>)<span class="sc">+</span></span>
-<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>plot_temperature <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-T</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
-<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
-<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
-<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
-<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">4.1</span>,<span class="fl">4.3</span>)</span>
-<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
-<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;temperature&quot;</span>)<span class="sc">+</span></span>
-<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>plot_eiv_unweighted <span class="ot">&lt;-</span> plot_moisture <span class="sc">+</span></span>
-<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>  plot_nitrogen <span class="sc">+</span></span>
-<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>  plot_reaction <span class="sc">+</span></span>
-<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>  plot_light <span class="sc">+</span></span>
-<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>  plot_temperature <span class="sc">+</span></span>
-<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">&quot;A&quot;</span>) <span class="sc">+</span></span>
-<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">ncol =</span> <span class="dv">5</span>)</span>
-<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>plot_eiv_unweighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plot_moisture <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-M</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)), </span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">4.3</span>,<span class="fl">4.6</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;moisture&quot;</span>)<span class="sc">+</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>plot_nitrogen <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-N</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">5.2</span>,<span class="fl">5.7</span>)</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;nitrogen&quot;</span>)<span class="sc">+</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>plot_reaction <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-R</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">5.8</span>,<span class="fl">6.1</span>)</span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;reaction&quot;</span>)<span class="sc">+</span></span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a>plot_light <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-L</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
+<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-67"><a href="#cb27-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">6.4</span>,<span class="fl">6.7</span>)</span>
+<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb27-72"><a href="#cb27-72" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-73"><a href="#cb27-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb27-74"><a href="#cb27-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;light&quot;</span>)<span class="sc">+</span></span>
+<span id="cb27-75"><a href="#cb27-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb27-76"><a href="#cb27-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-77"><a href="#cb27-77" aria-hidden="true" tabindex="-1"></a>plot_temperature <span class="ot">&lt;-</span> vegA_2019_eiv_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb27-78"><a href="#cb27-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, <span class="st">`</span><span class="at">EIVEres-T</span><span class="st">`</span>, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb27-79"><a href="#cb27-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb27-80"><a href="#cb27-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb27-81"><a href="#cb27-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb27-82"><a href="#cb27-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb27-83"><a href="#cb27-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)),</span>
+<span id="cb27-84"><a href="#cb27-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb27-85"><a href="#cb27-85" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-86"><a href="#cb27-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb27-87"><a href="#cb27-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="fl">4.1</span>,<span class="fl">4.3</span>)</span>
+<span id="cb27-88"><a href="#cb27-88" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-89"><a href="#cb27-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb27-90"><a href="#cb27-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb27-91"><a href="#cb27-91" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-92"><a href="#cb27-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb27-93"><a href="#cb27-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;temperature&quot;</span>)<span class="sc">+</span></span>
+<span id="cb27-94"><a href="#cb27-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb27-95"><a href="#cb27-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-96"><a href="#cb27-96" aria-hidden="true" tabindex="-1"></a>plot_eiv_unweighted <span class="ot">&lt;-</span> plot_moisture <span class="sc">+</span></span>
+<span id="cb27-97"><a href="#cb27-97" aria-hidden="true" tabindex="-1"></a>  plot_nitrogen <span class="sc">+</span></span>
+<span id="cb27-98"><a href="#cb27-98" aria-hidden="true" tabindex="-1"></a>  plot_reaction <span class="sc">+</span></span>
+<span id="cb27-99"><a href="#cb27-99" aria-hidden="true" tabindex="-1"></a>  plot_light <span class="sc">+</span></span>
+<span id="cb27-100"><a href="#cb27-100" aria-hidden="true" tabindex="-1"></a>  plot_temperature <span class="sc">+</span></span>
+<span id="cb27-101"><a href="#cb27-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">&quot;A&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-102"><a href="#cb27-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">ncol =</span> <span class="dv">5</span>)</span>
+<span id="cb27-103"><a href="#cb27-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-104"><a href="#cb27-104" aria-hidden="true" tabindex="-1"></a>plot_eiv_unweighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -4184,13 +4220,13 @@ vertical-align: -.125em;
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;plot_eiv_unweighted.jpg&quot;</span>,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot=</span>plot_eiv_unweighted,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width=</span><span class="dv">24</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height=</span><span class="dv">12</span>,</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">&quot;cm&quot;</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;plot_eiv_unweighted.jpg&quot;</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot=</span>plot_eiv_unweighted,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width=</span><span class="dv">24</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height=</span><span class="dv">12</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">&quot;cm&quot;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="community-weighted-means-of-functional-traits" class="level2" data-number="2">
@@ -4223,14 +4259,14 @@ Tip
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>canopy_height <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;data/canopy_height.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(valid<span class="sc">==</span><span class="dv">1</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>seed_mass <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;data/seed_mass.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(valid<span class="sc">==</span><span class="dv">1</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>sla <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;data/SLA.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(valid<span class="sc">==</span><span class="dv">1</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>canopy_height <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>canopy_height <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;data/canopy_height.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(valid<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>seed_mass <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;data/seed_mass.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(valid<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>sla <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;data/SLA.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(valid<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>canopy_height <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>spc_tbl_ [4,566 × 17] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
  $ SBS name                  : chr [1:4566] &quot;Marsilea quadrifolia&quot; &quot;Pilularia globulifera&quot; &quot;Salvinia natans&quot; &quot;Azolla filiculoides&quot; ...
@@ -4272,7 +4308,7 @@ Tip
   .. )
  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>seed_mass <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>seed_mass <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>spc_tbl_ [6,285 × 17] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
  $ SBS name            : chr [1:6285] &quot;Acer campestre&quot; &quot;Acer campestre&quot; &quot;Acer campestre&quot; &quot;Acer campestre&quot; ...
@@ -4314,7 +4350,7 @@ Tip
   .. )
  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>sla <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>sla <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>spc_tbl_ [3,755 × 24] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
  $ SBS name              : chr [1:3755] &quot;Dactylis glomerata&quot; &quot;Festuca pratensis&quot; &quot;Lolium perenne&quot; &quot;Festuca ovina&quot; ...
@@ -4371,75 +4407,378 @@ Tip
   .. )
  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>canopy_height <span class="ot">&lt;-</span> canopy_height <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">ID=</span><span class="st">`</span><span class="at">SBS name</span><span class="st">`</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">canopy_height=</span><span class="st">`</span><span class="at">single value [m]</span><span class="st">`</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span> </span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">canopy_height=</span>canopy_height <span class="sc">|&gt;</span> <span class="fu">mean</span>())</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>seed_mass <span class="ot">&lt;-</span> seed_mass <span class="sc">|&gt;</span> </span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">ID=</span><span class="st">`</span><span class="at">SBS name</span><span class="st">`</span>,</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">seed_mass=</span><span class="st">`</span><span class="at">single value [mg]</span><span class="st">`</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span> </span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">seed_mass=</span>seed_mass <span class="sc">|&gt;</span> <span class="fu">mean</span>())</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>sla <span class="ot">&lt;-</span> sla <span class="sc">|&gt;</span> </span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">ID=</span><span class="st">`</span><span class="at">SBS name</span><span class="st">`</span>,</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">specific_leaf_area=</span><span class="st">`</span><span class="at">single value [mm^2/mg]</span><span class="st">`</span></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span> </span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">specific_leaf_area=</span>specific_leaf_area <span class="sc">|&gt;</span> <span class="fu">mean</span>())</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>functional_traits <span class="ot">&lt;-</span> <span class="fu">full_join</span>(</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    canopy_height,</span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    seed_mass,</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>      ID</span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(</span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    sla,</span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>      ID</span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>canopy_height <span class="ot">&lt;-</span> canopy_height <span class="sc">|&gt;</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">ID=</span><span class="st">`</span><span class="at">SBS name</span><span class="st">`</span>,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">canopy_height=</span><span class="st">`</span><span class="at">single value [m]</span><span class="st">`</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span> </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">canopy_height=</span>canopy_height <span class="sc">|&gt;</span> <span class="fu">mean</span>())</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>seed_mass <span class="ot">&lt;-</span> seed_mass <span class="sc">|&gt;</span> </span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">ID=</span><span class="st">`</span><span class="at">SBS name</span><span class="st">`</span>,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">seed_mass=</span><span class="st">`</span><span class="at">single value [mg]</span><span class="st">`</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span> </span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">seed_mass=</span>seed_mass <span class="sc">|&gt;</span> <span class="fu">mean</span>())</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>sla <span class="ot">&lt;-</span> sla <span class="sc">|&gt;</span> </span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">ID=</span><span class="st">`</span><span class="at">SBS name</span><span class="st">`</span>,</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">specific_leaf_area=</span><span class="st">`</span><span class="at">single value [mm^2/mg]</span><span class="st">`</span></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span> </span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">specific_leaf_area=</span>specific_leaf_area <span class="sc">|&gt;</span> <span class="fu">mean</span>())</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>functional_traits <span class="ot">&lt;-</span> <span class="fu">full_join</span>(</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>    canopy_height,</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>    seed_mass,</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>      ID</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(</span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a>    sla,</span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a>      ID</span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits <span class="ot">&lt;-</span> vegA_2019_species <span class="sc">|&gt;</span> </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    functional_traits,</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(ID)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  )  </span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits <span class="sc">|&gt;</span> </span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(canopy_height) <span class="sc">|</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(seed_mass) <span class="sc">|</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(specific_leaf_area)</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ID,canopy_height,seed_mass,specific_leaf_area)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 22 × 4
-   ID                                canopy_height seed_mass specific_leaf_area
-   &lt;chr&gt;                                     &lt;dbl&gt;     &lt;dbl&gt;              &lt;dbl&gt;
- 1 Acer sp.                                 NA         NA                 NA   
- 2 Achillea millefolium aggr.               NA         NA                 NA   
- 3 Alchemilla sp.                           NA         NA                 NA   
- 4 Bromus hordeaceus                        NA          2.25              24.9 
- 5 c.f. Brassica sp.                        NA         NA                 NA   
- 6 c.f. Cerastium sp.                       NA         NA                 NA   
- 7 Carex sp.                                NA         NA                 NA   
- 8 Cerastium fontanum subsp. vulgare        NA         NA                 NA   
- 9 Epilobium sp.                            NA         NA                 NA   
-10 Equisetum arvense                         0.325     NA                  9.90
-# ℹ 12 more rows</code></pre>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits <span class="ot">&lt;-</span> vegA_2019_species <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    functional_traits,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(ID)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  )  </span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits <span class="sc">|&gt;</span> </span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(canopy_height) <span class="sc">|</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(seed_mass) <span class="sc">|</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(specific_leaf_area)</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ID,canopy_height,seed_mass,specific_leaf_area) <span class="sc">|&gt;</span> </span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ID</th>
+<th style="text-align: right;">canopy_height</th>
+<th style="text-align: right;">seed_mass</th>
+<th style="text-align: right;">specific_leaf_area</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Acer sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Achillea millefolium aggr.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alchemilla sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bromus hordeaceus</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2.2515142</td>
+<td style="text-align: right;">24.88000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">c.f. Brassica sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">c.f. Cerastium sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Carex sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cerastium fontanum subsp. vulgare</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Epilobium sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Equisetum arvense</td>
+<td style="text-align: right;">0.325</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">9.90099</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Erigeron annuus</td>
+<td style="text-align: right;">0.675</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">34.20000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Galium mollugo aggr.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hypochaeris radicata</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lysimachia nummularia</td>
+<td style="text-align: right;">0.450</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">27.17266</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poa trivialis</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1649333</td>
+<td style="text-align: right;">31.13998</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rhinanthus alectorolophus</td>
+<td style="text-align: right;">0.450</td>
+<td style="text-align: right;">3.6000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Salix sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Taraxacum officinale aggr.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trifolium sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Veronica cf. chamaedrys</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Veronica filiformis</td>
+<td style="text-align: right;">0.175</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">35.92500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Veronica sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>name_traits_map <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Achillea millefolium aggr.&quot;</span> <span class="ot">=</span> <span class="st">&quot;Achillea millefolium&quot;</span>, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Cerastium fontanum subsp. vulgare&quot;</span> <span class="ot">=</span> <span class="st">&quot;Cerastium fontanum&quot;</span>,    </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Galium mollugo aggr.&quot;</span> <span class="ot">=</span> <span class="st">&quot;Galium mollugo&quot;</span>,       </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Taraxacum officinale aggr.&quot;</span> <span class="ot">=</span> <span class="st">&quot;Taraxacum officinale&quot;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits_corrected <span class="ot">&lt;-</span> vegA_2019_species <span class="sc">|&gt;</span> </span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID_orig =</span> ID,</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="fu">recode</span>(<span class="fu">as.character</span>(ID), <span class="sc">!!!</span>name_traits_map),</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="fu">factor</span>(ID) </span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    functional_traits,</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>      ID</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> vegA_2019_traits_corrected <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ID, canopy_height, seed_mass, specific_leaf_area) <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="st">&quot;ID&quot;</span>) </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>abundances <span class="ot">&lt;-</span> vegA_2019_traits_corrected <span class="sc">|&gt;</span> </span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ID, <span class="fu">starts_with</span>(<span class="st">&quot;CH&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="st">&quot;ID&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>()</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits_cwm <span class="ot">&lt;-</span> <span class="fu">functcomp</span>(traits, abundances) <span class="sc">|&gt;</span> </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Plot =</span> <span class="fu">rownames</span>(abundances),</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">canopy_height =</span> canopy_height <span class="sc">|&gt;</span> <span class="fu">log10</span>(),</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed_mass =</span> seed_mass <span class="sc">|&gt;</span> <span class="fu">log10</span>()</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits_cwm_plotdata <span class="ot">&lt;-</span> vegA_2019_traits_cwm <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    vegA_2019_header <span class="sc">|&gt;</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Plot_2...<span class="dv">1</span>, Landuse),</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(Plot<span class="sc">==</span>Plot_2...<span class="dv">1</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(canopy_height<span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_traits_cwm_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)
+Landuse      1 0.0332 0.03321   1.846  0.183
+Residuals   34 0.6117 0.01799               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(seed_mass<span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_traits_cwm_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)
+Landuse      1 0.0441 0.04406   2.009  0.165
+Residuals   34 0.7458 0.02194               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(specific_leaf_area<span class="sc">~</span>Landuse, <span class="at">data=</span>vegA_2019_traits_cwm_plotdata) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+Landuse      1  46.12   46.12   12.93 0.00101 **
+Residuals   34 121.26    3.57                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>vegA_2019_traits_cwm_plotdata <span class="sc">|&gt;</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Plot,canopy_height,seed_mass,specific_leaf_area, Landuse) <span class="sc">|&gt;</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Plot           canopy_height       seed_mass        specific_leaf_area
+ Length:36          Min.   :-0.8341   Min.   :-0.20054   Min.   :22.67     
+ Class :character   1st Qu.:-0.6337   1st Qu.:-0.06090   1st Qu.:25.80     
+ Mode  :character   Median :-0.5620   Median : 0.01393   Median :27.69     
+                    Mean   :-0.5625   Mean   : 0.04098   Mean   :27.37     
+                    3rd Qu.:-0.5077   3rd Qu.: 0.12020   3rd Qu.:28.92     
+                    Max.   :-0.2059   Max.   : 0.45937   Max.   :32.77     
+   Landuse         
+ Length:36         
+ Class :character  
+ Mode  :character  
+                   
+                   
+                   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>plot_canopy_height <span class="ot">&lt;-</span> vegA_2019_traits_cwm_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, canopy_height, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)), </span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.9</span>,<span class="sc">-</span><span class="fl">0.2</span>)</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;log10(m)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;canopy height&quot;</span>)<span class="sc">+</span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>plot_seed_mass <span class="ot">&lt;-</span> vegA_2019_traits_cwm_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, seed_mass, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)), </span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2006</span>,<span class="fl">0.5</span>)</span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;log10(mg)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;seed mass&quot;</span>)<span class="sc">+</span></span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>plot_specifig_leaf_area <span class="ot">&lt;-</span> vegA_2019_traits_cwm_plotdata <span class="sc">|&gt;</span>  </span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Landuse, specific_leaf_area, <span class="at">fill=</span>Landuse)) <span class="sc">+</span></span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, </span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;p = &quot;</span>, ..p.format.., <span class="st">&quot; &quot;</span>, ..p.signif..)), </span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.x =</span> <span class="fl">1.25</span></span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">values=</span>landuse_colormap</span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;mm^2/mg&quot;</span>)<span class="sc">+</span></span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(.<span class="sc">~</span><span class="st">&quot;SLA&quot;</span>)<span class="sc">+</span></span>
+<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-55"><a href="#cb48-55" aria-hidden="true" tabindex="-1"></a>plot_traits_cwm <span class="ot">&lt;-</span> plot_canopy_height <span class="sc">+</span></span>
+<span id="cb48-56"><a href="#cb48-56" aria-hidden="true" tabindex="-1"></a>  plot_seed_mass <span class="sc">+</span></span>
+<span id="cb48-57"><a href="#cb48-57" aria-hidden="true" tabindex="-1"></a>  plot_specifig_leaf_area <span class="sc">+</span></span>
+<span id="cb48-58"><a href="#cb48-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">&quot;A&quot;</span>)</span>
+<span id="cb48-59"><a href="#cb48-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-60"><a href="#cb48-60" aria-hidden="true" tabindex="-1"></a>plot_traits_cwm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img role="img" src="data:image/png;base64,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" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;plot_traits_cwm.jpg&quot;</span>,</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot=</span>plot_traits_cwm,</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width=</span><span class="dv">24</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height=</span><span class="dv">12</span>,</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">&quot;cm&quot;</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="references" class="level2 unnumbered">
