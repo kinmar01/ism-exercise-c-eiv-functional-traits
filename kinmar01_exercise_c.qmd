@@ -318,7 +318,7 @@ ggsave(
   "plot_eiv_unweighted.jpg",
   plot=plot_eiv_unweighted,
   width=24,
-  height=12,
+  height=10,
   units = "cm"
 )
 ```
@@ -536,7 +536,7 @@ ggsave(
   "plot_traits_cwm.jpg",
   plot=plot_traits_cwm,
   width=24,
-  height=12,
+  height=10,
   units = "cm"
 )
 ```

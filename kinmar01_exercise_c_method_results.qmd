@@ -1,43 +1,56 @@
 ---
-title: "MSc ENR ISM: Exercise C"
-Subtitle: "Ecological Indicator Values and Functional Traits"
-author: "Marius King"
-date: today
+papersize: a4
 date-format: long
 format: 
   pdf:
+    fontsize: 12pt
+    keep-tex: true
+    fig-pos: 'H'
     geometry:
-      - top=25mm
+      - top=30mm
       - left=25mm
-      - right=30mm
+      - right=25mm
       - bottom=30mm
+      - heightrounded
+    header-includes: |
+      \usepackage{fancyhdr}
+      \pagestyle{fancy}
+      \fancyhead[L]{MSc ENR ISM: Exercise C}
+      \fancyhead[C]{}
+      \fancyhead[R]{Marius King, April 28, 2025}
 editor: visual
 bibliography: bibliography.bib
 ---
 
+# Ecological Indicator Values and Functional Traits
+
 ## Methods
 
-The analysis is based on data from vegetation surveys of swiss grassland (meadow and pasture) consisting of plotwise abundance data and the corresponding header data, of which only the assignment to the respective landuse was used.
+The analysis is based on vegetation survey data from Swiss grasslands (meadows and lawns), consisting of plot-wise species abundance data and corresponding header information. From the header data, only the landuse classification was used.
 
 ### Community Means of Ecological Indicator Values
 
-Ecological indicator values (EIV) for Europe were obtained from @dengler2023 and joined to the vegetation species list. Species that could not be directly matched were cross-checked for taxonomic discrepancies and corrected when necessary to enable successful matching. Species lacking available EIV values, as well as those with uncertain determinations at the species or genus level, were excluded prior to the calculation of community means.
+Ecological indicator values (EIVs) for Europe were obtained from @dengler2023 and matched to the species list of the vegetation data. Species that could not be matched directly were checked for taxonomic discrepancies and corrected when possible. Species without available EIVs or with uncertain identification at the species or genus level were excluded prior to analysis.
 
-Community means of EIV were calculated without abundance weighting. Mean values were aggregated at the plot level. Differences in community means between meadows and pastures were analyzed statistically and visualized graphically.
+Community means of EIVs were calculated at the plot level without abundance weighting. Differences in community means between meadows and lawns were analyzed statistically and visualized with boxplots.
 
 ### Community-Weighted Means of Functional Traits
 
-Functional trait data, specifically canopy height, seed mass, and specific leaf area (SLA), were sourced from the LEDA traitbase [@KleyerEtAl2008]. Individual trait datasets were merged and inspected for skewness. Where appropriate, traits were log10-transformed to approximate normal distributions. Analogous to the EIV procedure, the trait data were joined to the vegetation species list.
+Functional trait data, specifically canopy height, seed mass, and specific leaf area (SLA), were sourced from the LEDA trait database [@KleyerEtAl2008]. Trait datasets were merged and inspected for skewness; where necessary, values were log₁₀-transformed to approximate normal distributions. As with the EIVs, trait data were matched to the species list, and species lacking trait information or with uncertain identification were excluded.
 
-Community-weighted means (CWM) of the functional traits were calculated using the `functcomp` function of the **FD** package [@Laliberte2010; @Laliberte2014]. As with the EIV analysis, differences between landuse types were statistically tested and visualized.
+Community-weighted means (CWMs) of the functional traits were calculated using the `functcomp` function from the FD package [@Laliberte2010; @Laliberte2014], weighting trait values by species abundances. Differences between meadows and lawns were statistically tested and visualized using boxplots.
 
-All analyses were conducted using R version 4.5.0 [@RCoreTeam2025].
+All analyses were performed in R version 4.5.0 [@RCoreTeam2025].
 
 ## Results
 
-![Boxplots: Community means of Ecological Indicator Values](plot_eiv_unweighted.jpg){#fig-eiv_unweighted}
+A significant difference in the community ecological indicator values (EIVs) was found for nitrogen between meadows and lawns, with meadows exhibiting higher mean nitrogen values (@fig-eiv_unweighted). Temperature values tended to be higher in meadows as well, but the difference was not statistically significant.
 
-![Boxplots: Community-weighted means of functional traits](plot_traits_cwm.jpg){#fig-traits_cwm}
+![Boxplots showing differences in unweighted community means of ecological indicator values (EIVs) between meadows and lawns. A significant difference was observed for nitrogen values (B), with higher values in meadows. Temperature values tended to be higher in meadows but were not significantly different.](plot_eiv_unweighted.jpg){#fig-eiv_unweighted}
+
+Regarding community-weighted means (CWMs) of functional traits, specific leaf area (SLA) was significantly higher in meadows compared to lawns (@fig-traits_cwm). No significant differences were found for seed mass and canopy height.
+
+![Boxplots illustrating differences in community-weighted means of functional traits ((A) canopy height, (B) seed mass, and (C) specific leaf area) between meadows and lawns. A significant difference was observed for SLA, with higher values in meadows. No significant differences were found for canopy height and seed mass.](plot_traits_cwm.jpg){#fig-traits_cwm}
 
 ## References
 
