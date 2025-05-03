@@ -17,7 +17,7 @@ format:
       \pagestyle{fancy}
       \fancyhead[L]{MSc ENR ISM: Exercise C}
       \fancyhead[C]{}
-      \fancyhead[R]{Marius King, April 28, 2025}
+      \fancyhead[R]{Marius King, May 03, 2025}
 editor: visual
 bibliography: bibliography.bib
 ---
@@ -36,7 +36,7 @@ Community means of EIVs were calculated at the plot level without abundance weig
 
 ### Community-Weighted Means of Functional Traits
 
-Functional trait data, specifically canopy height, seed mass, and specific leaf area (SLA), were sourced from the LEDA trait database [@KleyerEtAl2008]. Trait datasets were merged and inspected for skewness; where necessary, values were log₁₀-transformed to approximate normal distributions. As with the EIVs, trait data were matched to the species list, and species lacking trait information or with uncertain identification were excluded.
+Functional trait data, specifically canopy height, seed mass, and specific leaf area (SLA), were sourced from the LEDA trait database [@KleyerEtAl2008]. Trait datasets were merged and inspected for skewness; values for canopy height and seed mass were log₁₀-transformed to approximate normal distributions. As with the EIVs, trait data were matched to the species list, and species lacking trait information or with uncertain identification were excluded.
 
 Community-weighted means (CWMs) of the functional traits were calculated using the `functcomp` function from the FD package [@Laliberte2010; @Laliberte2014], weighting trait values by species abundances. Differences between meadows and lawns were statistically tested and visualized using boxplots.
 
@@ -48,7 +48,7 @@ A significant difference in the community ecological indicator values (EIVs) was
 
 ![Boxplots showing differences in unweighted community means of ecological indicator values (EIVs) between meadows and lawns. A significant difference was observed for nitrogen values (B), with higher values in meadows. Temperature values tended to be higher in meadows but were not significantly different.](plot_eiv_unweighted.jpg){#fig-eiv_unweighted}
 
-Regarding community-weighted means (CWMs) of functional traits, specific leaf area (SLA) was significantly higher in meadows compared to lawns (@fig-traits_cwm). No significant differences were found for seed mass and canopy height.
+Regarding community-weighted means (CWMs) of functional traits, specific leaf area (SLA) was significantly higher in meadows compared to lawns (@fig-traits_cwm). No significant differences were found for seed mass and canopy height between the two landuse types.
 
 ![Boxplots illustrating differences in community-weighted means of functional traits ((A) canopy height, (B) seed mass, and (C) specific leaf area) between meadows and lawns. A significant difference was observed for SLA, with higher values in meadows. No significant differences were found for canopy height and seed mass.](plot_traits_cwm.jpg){#fig-traits_cwm}
 
